@@ -168,6 +168,11 @@
     "@types/koa" "*"
     graphql "^14.5.3"
 
+"@types/gremlin@^3.4.6":
+  version "3.4.6"
+  resolved "https://registry.yarnpkg.com/@types/gremlin/-/gremlin-3.4.6.tgz#bdc83ffe9738c49c3eac56006ae62b1f06bdce8c"
+  integrity sha512-ncw1vWIpoSdG8I6yPWvCE+q2yVzQRdEC0Gy1dHE96T4VV1W+k3oif93Hzxu1hMRz0GUOlyCVE2zvqOwS02Zogg==
+
 "@types/http-assert@*":
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/@types/http-assert/-/http-assert-1.5.1.tgz#d775e93630c2469c2f980fc27e3143240335db3b"
@@ -961,6 +966,13 @@ graphql@^14.0.0, graphql@^14.5.3:
   integrity sha512-l0xWZpoPKpppFzMfvVyFmp9vLN7w/ZZJPefUicMCepfJeQ8sMcztloGYY9DfjVPo6tIUDzU5Hw3MUbIjj9AVVA==
   dependencies:
     iterall "^1.2.2"
+
+gremlin@^3.4.8:
+  version "3.4.8"
+  resolved "https://registry.yarnpkg.com/gremlin/-/gremlin-3.4.8.tgz#49e4fcad47862f43c4c518b01907a2351a3a2dab"
+  integrity sha512-NZqayjvwYG5Hya7Pt4sDWt7uXom7RaqvFg9Jlge+5v37taxvCbj1DVR9vpMZXRedhIQfVbQH3QjNk24hipn+pQ==
+  dependencies:
+    ws "^6.2.1"
 
 has-symbols@^1.0.0, has-symbols@^1.0.1:
   version "1.0.1"
@@ -1788,7 +1800,7 @@ ws@^5.2.0:
   dependencies:
     async-limiter "~1.0.0"
 
-ws@^6.0.0:
+ws@^6.0.0, ws@^6.2.1:
   version "6.2.1"
   resolved "https://registry.yarnpkg.com/ws/-/ws-6.2.1.tgz#442fdf0a47ed64f59b6a5d8ff130f4748ed524fb"
   integrity sha512-GIyAXC2cB7LjvpgMt9EKS2ldqr0MTrORaleiOno6TweZ6r3TKtoFQWay/2PceJ3RuBasOHzXNn5Lrw1X0bEjqA==
