@@ -2,5 +2,18 @@
   "name": "gremlin-graphql-experiment",
   "version": "0.1.0",
   "private": true,
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "dev": "ts-node-dev --respawn index.ts",
+    "start": "ts-node index.ts"
+  },
+  "dependencies": {
+    "apollo-server": "^2.16.1",
+    "graphql": "^14.0.0"
+  },
+  "devDependencies": {
+    "ts-node": "^8.10.2",
+    "ts-node-dev": "^1.0.0-pre.56",
+    "typescript": "^3.9.7"
+  }
 }
