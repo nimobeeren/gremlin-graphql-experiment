@@ -10,3 +10,6 @@ https://www.npmjs.com/package/gremlin
 
 Docker container for server
 https://tinkerpop.apache.org/docs/3.4.7/reference/#gremlin-server-docker-image
+
+Common JS imports
+https://tinkerpop.apache.org/docs/3.4.7/reference/#_common_imports_2

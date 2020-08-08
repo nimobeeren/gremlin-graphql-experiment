@@ -1,5 +1,9 @@
 import { process, driver } from "gremlin";
-const { traversal } = process.AnonymousTraversalSource;
+const {
+  AnonymousTraversalSource: { traversal },
+  statics: __,
+  withOptions
+} = process;
 const { DriverRemoteConnection } = driver;
 import { ApolloServer, gql } from "apollo-server";
 
@@ -8,9 +12,9 @@ import { ApolloServer, gql } from "apollo-server";
     new DriverRemoteConnection("ws://localhost:8182/gremlin")
   );
 
-  const p = (await g.V(1).elementMap().next()).value;
-  console.log(p);
-  // TODO: get queried fields from resolver and pass them to elementMap()
+  // Seems like it doesn't do anything when server is not reachable.
+  // It simply waits forever when making a query.
+  // TODO: check if we are actually connected
 
   const typeDefs = gql`
     type Query {
@@ -27,7 +31,15 @@ import { ApolloServer, gql } from "apollo-server";
   const resolvers = {
     Query: {
       person: async () => {
-        return p;
+        const p = (await g.V(1).valueMap().with_(withOptions.tokens, withOptions.ids).by(__.unfold()).next()).value;
+
+        // TODO: get only the requested fields
+        // TODO: dont unfold single-element arrays when an array should be returned
+
+        // TODO: assert that p is a map
+        // I'm not sure how fromEntries() is converting the ID map entry
+        // correctly, even though entries() represents it as an EnumValue
+        return Object.fromEntries(p.entries());
       },
     },
   };
