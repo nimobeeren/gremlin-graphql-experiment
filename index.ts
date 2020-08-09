@@ -2,10 +2,11 @@ import { process, driver } from "gremlin";
 const {
   AnonymousTraversalSource: { traversal },
   statics: __,
-  withOptions
+  withOptions,
 } = process;
 const { DriverRemoteConnection } = driver;
 import { ApolloServer, gql } from "apollo-server";
+import getFieldsToResolve from "graphql-fields";
 
 (async () => {
   const g = traversal().withRemote(
@@ -30,16 +31,39 @@ import { ApolloServer, gql } from "apollo-server";
 
   const resolvers = {
     Query: {
-      person: async () => {
-        const p = (await g.V(1).valueMap().with_(withOptions.tokens, withOptions.ids).by(__.unfold()).next()).value;
+      person: async (parent, args, context, info) => {
+        let tr = g.V(1);
 
-        // TODO: get only the requested fields
+        const fields = getFieldsToResolve(info);
+        const topLevelFields = Object.keys(fields);
+
+        // TODO: create abstraction for "get properties from node"
+
+        tr = tr.valueMap();
+
+        // Get only the fields to resolve
+        tr = tr.select(...topLevelFields);
+
+        // ID field must be explicitly requested
+        if (topLevelFields.includes("id")) {
+          tr = tr.with_(withOptions.tokens, withOptions.ids);
+        }
+
+        // Property values are normally wrapped in an array, this unfolds the
+        // array if it contains only one element
         // TODO: dont unfold single-element arrays when an array should be returned
+        tr = tr.by(__.unfold());
 
-        // TODO: assert that p is a map
+        const result = (await tr.next()).value;
+        console.log(result);
+        // FIXME: fails when resolving only one (non-ID) field
+        if (!(result instanceof Map)) {
+          throw new TypeError("Expected traversal result to be a map");
+        }
+
         // I'm not sure how fromEntries() is converting the ID map entry
         // correctly, even though entries() represents it as an EnumValue
-        return Object.fromEntries(p.entries());
+        return Object.fromEntries(result.entries());
       },
     },
   };
