@@ -39,12 +39,10 @@ import getFieldsToResolve from "graphql-fields";
 
         // TODO: create abstraction for "get properties from node"
 
-        tr = tr.valueMap();
+        tr = tr.valueMap(...topLevelFields);
 
-        // Get only the fields to resolve
-        tr = tr.select(...topLevelFields);
-
-        // ID field must be explicitly requested
+        // ID field must be explicitly requested, valueMap() does not include
+        // it by default
         if (topLevelFields.includes("id")) {
           tr = tr.with_(withOptions.tokens, withOptions.ids);
         }
@@ -56,7 +54,6 @@ import getFieldsToResolve from "graphql-fields";
 
         const result = (await tr.next()).value;
         console.log(result);
-        // FIXME: fails when resolving only one (non-ID) field
         if (!(result instanceof Map)) {
           throw new TypeError("Expected traversal result to be a map");
         }
